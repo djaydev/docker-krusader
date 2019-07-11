@@ -36,7 +36,7 @@ RUN cd krename/build && make -j$(nproc) && make install
 # Pull base image.
 FROM jlesage/baseimage-gui:alpine-3.9
 
-# Add testing repo for ssh-askpass, add community repo for some python packages
+# Add testing repo for edge upgrade
 RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
 		echo "http://dl-3.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
 		echo "http://dl-3.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
