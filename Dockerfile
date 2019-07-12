@@ -1,7 +1,7 @@
 # Pull base build image.
 FROM alpine:edge AS builder
 
-# Add testing repo for ssh-askpass
+# Add testing repo for KDE packages
 RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
 		echo "http://dl-3.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
 		echo "http://dl-3.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
@@ -15,7 +15,7 @@ RUN apk --update --upgrade add \
 
 WORKDIR /tmp
 
-# Download krusader, krename from KDE
+# Download krusader, krename, kdiff3 from KDE
 RUN git clone git://anongit.kde.org/krename
 RUN git clone git://anongit.kde.org/kdiff3
 RUN wget http://kde.mirrors.tds.net/pub/kde/stable/krusader/2.7.1/krusader-2.7.1.tar.xz
