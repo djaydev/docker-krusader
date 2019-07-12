@@ -3,15 +3,15 @@ FROM alpine:edge AS builder
 
 # Add testing repo for KDE packages
 RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-		echo "http://dl-3.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
-		echo "http://dl-3.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
+    echo "http://dl-3.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
+    echo "http://dl-3.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
 
 # Install packages.
 RUN apk --update --upgrade add \
-		build-base cmake extra-cmake-modules qt5-qtbase-dev xvfb-run\
-		wget git bash ki18n-dev kio-dev kbookmarks-dev kparts-dev kdesu-dev \
-		kwindowsystem-dev kiconthemes-dev kxmlgui-dev kdoctools-dev \
-		kdeplasma-addons-dev plasma-desktop-dev qt5-qtlocation-dev acl-dev
+    build-base cmake extra-cmake-modules qt5-qtbase-dev xvfb-run\
+    wget git bash ki18n-dev kio-dev kbookmarks-dev kparts-dev kdesu-dev \
+    kwindowsystem-dev kiconthemes-dev kxmlgui-dev kdoctools-dev \
+    kdeplasma-addons-dev plasma-desktop-dev qt5-qtlocation-dev acl-dev
 
 WORKDIR /tmp
 
@@ -48,16 +48,16 @@ FROM jlesage/baseimage-gui:alpine-3.9
 
 # Add testing repo for edge upgrade
 RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-		echo "http://dl-3.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
-		echo "http://dl-3.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
+    echo "http://dl-3.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
+    echo "http://dl-3.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
 
 # Install packages.
 RUN apk upgrade --update-cache --available && \
- 		apk add \
-		bash kate keditbookmarks konsole mesa-dri-swrast \
-		p7zip unrar unzip findutils ntfs-3g libacl taglib \
-		dbus-x11 breeze-icons exiv2 kjs diffutils \
-		&& rm -rf /var/cache/apk/* /tmp/* /tmp/.[!.]*
+    apk add \
+    bash kate keditbookmarks konsole mesa-dri-swrast \
+    p7zip unrar unzip findutils ntfs-3g libacl taglib \
+    dbus-x11 breeze-icons exiv2 kjs diffutils \
+    && rm -rf /var/cache/apk/* /tmp/* /tmp/.[!.]*
 
 ENV LANG=C.UTF-8
 
