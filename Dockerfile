@@ -15,14 +15,16 @@ RUN apk --update --upgrade add \
 
 WORKDIR /tmp
 
-# Download krusader, krename, kdiff3 from KDE
+# Download krusader, krename, kompare from KDE
 RUN git clone git://anongit.kde.org/krename
-RUN git clone git://anongit.kde.org/kdiff3
+RUN git clone https://github.com/KDE/libkomparediff2.git
+RUN git clone git://anongit.kde.org/kompare
 RUN wget http://kde.mirrors.tds.net/pub/kde/stable/krusader/2.7.1/krusader-2.7.1.tar.xz
 RUN tar -xvf krusader-2.7.1.tar.xz
 RUN mkdir krusader-2.7.1/build
 RUN mkdir krename/build
-RUN mkdir kdiff3/build
+RUN mkdir libkomparediff2/build
+RUN mkdir kompare/build
 
 # Compile krusader
 RUN cd krusader-2.7.1/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
@@ -35,9 +37,11 @@ RUN cd krusader-2.7.1/build && make -j$(nproc) && make install
 RUN cd krename/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
 RUN cd krename/build && make -j$(nproc) && make install
 
-# Compile kdiff3
-RUN cd kdiff3/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
-RUN cd kdiff3/build && make -j$(nproc) && make install
+# Compile kompare and it's dependency libkomparediff2
+RUN cd libkomparediff2/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
+RUN cd libkomparediff2/build && make -j$(nproc) && make install
+RUN cd kompare/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
+RUN cd kompare/build && make -j$(nproc) && make install
 
 # Pull base image.
 FROM jlesage/baseimage-gui:alpine-3.9
@@ -52,7 +56,7 @@ RUN apk upgrade --update-cache --available && \
  		apk add \
 		bash kate keditbookmarks konsole mesa-dri-swrast \
 		p7zip unrar unzip findutils ntfs-3g libacl taglib \
-		dbus-x11 breeze-icons exiv2 kjs \
+		dbus-x11 breeze-icons exiv2 kjs diffutils \
 		&& rm -rf /var/cache/apk/* /tmp/* /tmp/.[!.]*
 
 ENV LANG=C.UTF-8
@@ -118,6 +122,7 @@ RUN chmod +x /startapp.sh
 
 # Copy Krusader from base build image.
 COPY --from=builder /usr/local /usr/
+RUN ln -s /usr/lib64/* /usr/lib && ln -s /usr/lib64/plugins/kf5/parts/* /usr/lib/qt5/plugins/kf5/parts/
 
 # Set the name of the application.
 ENV APP_NAME="Krusader"
