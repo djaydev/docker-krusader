@@ -81,5 +81,8 @@ RUN chmod +x /startapp.sh
 COPY --from=builder /usr/local /usr/
 RUN ln -s /usr/lib64/* /usr/lib && ln -s /usr/lib64/plugins/kf5/parts/* /usr/lib/qt5/plugins/kf5/parts/
 
+# Change web background color
+RUN echo "sed-patch 's/<body>/<body><style>body { background-color: dimgrey; }<\/style>\n/' /opt/novnc/index.html" >> /etc/cont-init.d/10-web-index.sh
+
 # Set the name of the application.
 ENV APP_NAME="Krusader"
