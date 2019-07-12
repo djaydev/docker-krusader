@@ -8,19 +8,21 @@ RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositor
 
 # Install packages.
 RUN apk --update --upgrade add \
-		build-base cmake extra-cmake-modules qt5-qtbase-dev \
-		wget git bash ki18n-dev kio-dev kbookmarks-dev kparts-dev \
+		build-base cmake extra-cmake-modules qt5-qtbase-dev xvfb-run\
+		wget git bash ki18n-dev kio-dev kbookmarks-dev kparts-dev kdesu-dev \
 		kwindowsystem-dev kiconthemes-dev kxmlgui-dev kdoctools-dev \
-		xvfb-run kdesu-dev qt5-qtlocation-dev acl-dev
+		kdeplasma-addons-dev plasma-desktop-dev qt5-qtlocation-dev acl-dev
 
 WORKDIR /tmp
 
 # Download krusader, krename from KDE
 RUN git clone git://anongit.kde.org/krename
+RUN git clone git://anongit.kde.org/kdiff3
 RUN wget http://kde.mirrors.tds.net/pub/kde/stable/krusader/2.7.1/krusader-2.7.1.tar.xz
 RUN tar -xvf krusader-2.7.1.tar.xz
 RUN mkdir krusader-2.7.1/build
 RUN mkdir krename/build
+RUN mkdir kdiff3/build
 
 # Compile krusader
 RUN cd krusader-2.7.1/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
@@ -32,6 +34,10 @@ RUN cd krusader-2.7.1/build && make -j$(nproc) && make install
 # Compile krename
 RUN cd krename/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
 RUN cd krename/build && make -j$(nproc) && make install
+
+# Compile kdiff3
+RUN cd kdiff3/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
+RUN cd kdiff3/build && make -j$(nproc) && make install
 
 # Pull base image.
 FROM jlesage/baseimage-gui:alpine-3.9
@@ -45,8 +51,8 @@ RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositor
 RUN apk upgrade --update-cache --available && \
  		apk add \
 		bash kate keditbookmarks konsole mesa-dri-swrast \
-		p7zip unrar unzip findutils ntfs-3g \
-		dbus-x11 breeze-icons adwaita-icon-theme \
+		p7zip unrar unzip findutils ntfs-3g libacl taglib \
+		dbus-x11 breeze-icons exiv2 kjs \
 		&& rm -rf /var/cache/apk/* /tmp/* /tmp/.[!.]*
 
 ENV LANG=C.UTF-8
