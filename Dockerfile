@@ -17,7 +17,7 @@ WORKDIR /tmp
 
 # Download krusader, krename, kompare from KDE
 RUN git clone git://anongit.kde.org/krename
-RUN git clone https://github.com/KDE/libkomparediff2.git
+RUN git clone git://anongit.kde.org/libkomparediff2
 RUN git clone git://anongit.kde.org/kompare
 RUN git clone git://anongit.kde.org/krusader
 RUN mkdir krusader/build
