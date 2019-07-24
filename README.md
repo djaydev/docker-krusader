@@ -7,7 +7,7 @@ Base image used: jlesage/baseimage-gui:alpine-3.9
 
 ```
 docker run -d \
-    --name=Krusader \
+    --name=krusader \
     -p 5800:5800 \
     -p 5900:5900 \
     -v /docker/appdata/krusader:/config:rw \
