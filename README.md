@@ -6,7 +6,8 @@ Project: <https://krusader.org/>
 
 Base image used: jlesage/baseimage-gui:alpine-3.9
 
-```docker run -d \
+```shell
+    docker run -d \
     --name=krusader \
     -p 5800:5800 \
     -p 5900:5900 \
