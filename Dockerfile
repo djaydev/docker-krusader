@@ -53,7 +53,7 @@ RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositor
 # Install packages.
 RUN apk upgrade --update-cache --available && \
     apk add \
-    bash kwrite keditbookmarks konsole mesa-dri-swrast xz \
+    bash kate keditbookmarks konsole mesa-dri-swrast xz \
     p7zip unrar zip unzip findutils ntfs-3g libacl taglib \
     dbus-x11 breeze-icons exiv2 kjs diffutils libc6-compat && \
     rm -rf /var/cache/apk/* /tmp/* /tmp/.[!.]* /usr/share/icons/breeze-dark
