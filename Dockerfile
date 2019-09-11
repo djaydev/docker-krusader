@@ -15,15 +15,11 @@ RUN apk --update --upgrade add \
 
 WORKDIR /tmp
 
-# Download krusader, krename, kompare from KDE
+# Download krusader, krename from KDE
 RUN git clone git://anongit.kde.org/krename
-RUN git clone git://anongit.kde.org/libkomparediff2
-RUN git clone git://anongit.kde.org/kompare
 RUN git clone git://anongit.kde.org/krusader
 RUN mkdir krusader/build
 RUN mkdir krename/build
-RUN mkdir libkomparediff2/build
-RUN mkdir kompare/build
 
 # Compile krusader
 RUN cd krusader/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
@@ -36,12 +32,6 @@ RUN cd krusader/build && make -j$(nproc) && make install
 RUN cd krename/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
 RUN cd krename/build && make -j$(nproc) && make install
 
-# Compile kompare and it's dependency libkomparediff2
-RUN cd libkomparediff2/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
-RUN cd libkomparediff2/build && make -j$(nproc) && make install
-RUN cd kompare/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
-RUN cd kompare/build && make -j$(nproc) && make install
-
 # Pull base image.
 FROM jlesage/baseimage-gui:alpine-3.9
 
@@ -53,10 +43,17 @@ RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositor
 # Install packages.
 RUN apk upgrade --update-cache --available && \
     apk add \
-    bash kate keditbookmarks konsole mesa-dri-swrast xz \
+    bash kate keditbookmarks konsole kompare mesa-dri-swrast xz \
     p7zip unrar zip unzip findutils ntfs-3g libacl taglib \
     dbus-x11 breeze-icons exiv2 kjs diffutils libc6-compat && \
-    rm -rf /var/cache/apk/* /tmp/* /tmp/.[!.]* /usr/share/icons/breeze-dark
+    # some breeze icon names differ
+    ln -s /usr/share/icons/breeze/mimetypes/22/audio-x-mpeg.svg /usr/share/icons/breeze/mimetypes/22/audio-mpeg.svg && \
+    ln -s /usr/share/icons/breeze/mimetypes/22/application-x-raw-disk-image.svg /usr/share/icons/breeze/mimetypes/22/application-raw-disk-image.svg && \
+    ln -s /usr/share/icons/breeze/mimetypes/22/application-x-gzip.svg /usr/share/icons/breeze/mimetypes/22/application-gzip.svg && \
+    ln -s /usr/share/icons/breeze/mimetypes/22/video-x-generic.svg /usr/share/icons/breeze/mimetypes/22/video-quicktime.svg && \
+    ln -s /usr/share/icons/breeze/mimetypes/22/libreoffice-presentation.svg /usr/share/icons/breeze/mimetypes/22/application-vnd.openxmlformats-officedocument.presentationml.presentation.svg && \
+    ln -s /usr/share/icons/breeze/mimetypes/22/application-x-zerosize.svg /usr/share/icons/breeze/mimetypes/22/inode-socket.svg && \
+    rm -rf /var/cache/apk/* /tmp/* /tmp/.[!.]* /usr/share/icons/breeze-dark /usr/share/icons/breeze/breeze-icons.rcc
 
 # Adjust the openbox config.
 RUN \
