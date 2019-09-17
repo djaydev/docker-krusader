@@ -75,8 +75,7 @@ COPY startapp.sh /startapp.sh
 
 # Copy Krusader from base build image.
 COPY --from=builder /usr/local /usr/
-COPY --from=builder /usr/lib/qt5/plugins/ /usr/lib/qt5/plugins/
-RUN ln -s /usr/lib64/* /usr/lib && ln -s /usr/lib64/plugins/kf5/parts/* /usr/lib/qt5/plugins/kf5/parts/
+RUN ln -s /usr/lib64/plugins/* /usr/lib/qt5/plugins/
 
 # Change web background color
 RUN echo "sed-patch 's/<body>/<body><style>body { background-color: dimgrey; }<\/style>\n/' /opt/novnc/index.html" >> /etc/cont-init.d/10-web-index.sh
