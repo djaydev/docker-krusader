@@ -75,6 +75,7 @@ COPY startapp.sh /startapp.sh
 
 # Copy Krusader from base build image.
 COPY --from=builder /usr/local /usr/local
+COPY --from=builder /usr/lib/qt5/plugins/ /usr/lib/qt5/plugins/
 RUN ln -s /usr/local/lib64/* /usr/lib && ln -s /usr/local/lib64/plugins/kf5/parts/* /usr/lib/qt5/plugins/kf5/parts/
 
 # Change web background color
