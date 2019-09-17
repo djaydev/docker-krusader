@@ -22,14 +22,14 @@ RUN mkdir krusader/build
 RUN mkdir krename/build
 
 # Compile krusader
-RUN cd krusader/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
+RUN cd krusader/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" ..
 RUN sed -i 's/#include <time.h>/#include <time.h>\n#include <sys\/types.h>/' /tmp/krusader/krusader/DiskUsage/filelightParts/fileTree.h
 RUN sed -i 's/#include <time.h>/#include <time.h>\n#include <sys\/types.h>/' /tmp/krusader/krusader/FileSystem/krpermhandler.h
 RUN sed -i 's/#include <pwd.h>/#include <pwd.h>\n#include <sys\/types.h>/' /tmp/krusader/krusader/FileSystem/krpermhandler.cpp
 RUN cd krusader/build && make -j$(nproc) && make install
 
 # Compile krename
-RUN cd krename/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" -DCMAKE_CXX_FLAGS="-O2 -fPIC" ..
+RUN cd krename/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" ..
 RUN cd krename/build && make -j$(nproc) && make install
 
 # Pull base image.
