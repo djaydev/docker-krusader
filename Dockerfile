@@ -33,7 +33,7 @@ RUN cd krename/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS=
 RUN cd krename/build && make -j$(nproc) && make install
 
 # Pull base image.
-FROM jlesage/baseimage-gui:alpine-3.10
+FROM jlesage/baseimage-gui:alpine-3.11
 
 # Add testing repo for edge upgrade
 RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
