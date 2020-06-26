@@ -35,6 +35,8 @@ RUN apk add \
     bash kate keditbookmarks konsole kompare \
     p7zip unrar zip xz findutils ntfs-3g libacl taglib \
     dbus-x11 breeze-icons exiv2 kjs diffutils libc6-compat && \
+    apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/v3.11/main/ \
+    mesa-dri-swrast && \
     # some breeze icon names differ
     ln -s /usr/share/icons/breeze/mimetypes/22/audio-x-mpeg.svg /usr/share/icons/breeze/mimetypes/22/audio-mpeg.svg && \
     ln -s /usr/share/icons/breeze/mimetypes/22/application-x-raw-disk-image.svg /usr/share/icons/breeze/mimetypes/22/application-raw-disk-image.svg && \
