@@ -11,8 +11,8 @@ RUN apk add \
 WORKDIR /tmp
 
 # Download krusader, krename from KDE
-RUN git clone git://anongit.kde.org/krename
-RUN git clone git://anongit.kde.org/krusader
+RUN git clone https://invent.kde.org/utilities/krename.git
+RUN git clone https://invent.kde.org/utilities/krusader.git
 RUN mkdir krusader/build
 RUN mkdir krename/build
 
