@@ -1,13 +1,8 @@
 # Pull base build image.
-FROM alpine:edge AS builder
-
-# Add testing repo for KDE packages
-RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    echo "http://dl-3.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
-    echo "http://dl-3.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
+FROM alpine:3.12 AS builder
 
 # Install packages.
-RUN apk --update --upgrade add \
+RUN apk add \
     build-base cmake extra-cmake-modules qt5-qtbase-dev xvfb-run\
     git bash ki18n-dev kio-dev kbookmarks-dev kparts-dev kdesu-dev \
     kwindowsystem-dev kiconthemes-dev kxmlgui-dev kdoctools-dev libc6-compat \
@@ -33,17 +28,11 @@ RUN cd krename/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS=
 RUN cd krename/build && make -j$(nproc) && make install
 
 # Pull base image.
-FROM jlesage/baseimage-gui:alpine-3.11
-
-# Add testing repo for edge upgrade
-RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    echo "http://dl-3.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
-    echo "http://dl-3.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
+FROM jlesage/baseimage-gui:alpine-3.12
 
 # Install packages.
-RUN apk upgrade --update-cache --available && \
-    apk add \
-    bash kate keditbookmarks konsole kompare mesa-dri-swrast \
+RUN apk add \
+    bash kate keditbookmarks konsole kompare \
     p7zip unrar zip xz findutils ntfs-3g libacl taglib \
     dbus-x11 breeze-icons exiv2 kjs diffutils libc6-compat && \
     # some breeze icon names differ
