@@ -4,7 +4,7 @@ Krusader is an advanced twin panel (commander style) file manager similar to Mid
 
 Project: <https://krusader.org/>
 
-Base image used: jlesage/baseimage-gui:alpine-3.9
+Base image used: jlesage/baseimage-gui:alpine
 
 ```shell
     docker run -d \
