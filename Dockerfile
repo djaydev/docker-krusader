@@ -32,7 +32,7 @@ FROM jlesage/baseimage-gui:alpine-3.12
 
 # Install packages.
 RUN apk add \
-    bash kate keditbookmarks konsole kompare \
+    bash kate keditbookmarks konsole kompare kio-extras \
     p7zip unrar zip xz findutils ntfs-3g libacl taglib \
     dbus-x11 breeze-icons exiv2 kjs diffutils libc6-compat && \
     apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/v3.11/main/ \
