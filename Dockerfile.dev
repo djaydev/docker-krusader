@@ -15,7 +15,7 @@ RUN apk --update --upgrade add \
 WORKDIR /tmp
 
 # Download krusader from KDE
-RUN git clone git://anongit.kde.org/krusader
+RUN git clone https://invent.kde.org/utilities/krusader.git
 RUN mkdir krusader/build
 
 # Compile krusader
