@@ -3,18 +3,19 @@ FROM alpine:3.12 AS builder
 
 # Install packages.
 RUN apk add \
-    build-base cmake extra-cmake-modules qt5-qtbase-dev xvfb-run\
+    build-base cmake extra-cmake-modules qt5-qtbase-dev xvfb-run \
     git bash ki18n-dev kio-dev kbookmarks-dev kparts-dev kdesu-dev \
     kwindowsystem-dev kiconthemes-dev kxmlgui-dev kdoctools-dev libc6-compat \
     kdeplasma-addons-dev plasma-desktop-dev qt5-qtlocation-dev acl-dev
 
+RUN apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+    krename
+
 WORKDIR /tmp
 
-# Download krusader, krename from KDE
-RUN git clone https://invent.kde.org/utilities/krename.git
+# Download krusader from KDE
 RUN git clone https://invent.kde.org/utilities/krusader.git
 RUN mkdir krusader/build
-RUN mkdir krename/build
 
 # Compile krusader
 RUN cd krusader/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" ..
@@ -22,10 +23,6 @@ RUN sed -i 's/#include <time.h>/#include <time.h>\n#include <sys\/types.h>/' /tm
 RUN sed -i 's/#include <time.h>/#include <time.h>\n#include <sys\/types.h>/' /tmp/krusader/krusader/FileSystem/krpermhandler.h
 RUN sed -i 's/#include <pwd.h>/#include <pwd.h>\n#include <sys\/types.h>/' /tmp/krusader/krusader/FileSystem/krpermhandler.cpp
 RUN cd krusader/build && make -j$(nproc) && make install
-
-# Compile krename
-RUN cd krename/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-O2 -fPIC" ..
-RUN cd krename/build && make -j$(nproc) && make install
 
 # Pull base image.
 FROM jlesage/baseimage-gui:alpine-3.12
@@ -35,6 +32,8 @@ RUN apk add \
     bash kate keditbookmarks konsole kompare kio-extras \
     p7zip unrar zip xz findutils ntfs-3g libacl taglib \
     dbus-x11 breeze-icons exiv2 kjs diffutils libc6-compat && \
+    apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+    krename && \
     apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/v3.11/main/ \
     mesa-dri-swrast && \
     # some breeze icon names differ
