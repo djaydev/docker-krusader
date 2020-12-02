@@ -1,16 +1,15 @@
 # Pull base build image.
-FROM alpine:edge AS builder
-
-# Add testing repo for KDE packages
-RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    echo "http://dl-3.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories
+FROM alpine:3.12 AS builder
 
 # Install packages.
-RUN apk --update --upgrade add \
+RUN apk add \
     build-base cmake extra-cmake-modules qt5-qtbase-dev xvfb-run \
-    git bash ki18n-dev kio-dev kbookmarks-dev kparts-dev kdesu-dev krename \
+    git bash ki18n-dev kio-dev kbookmarks-dev kparts-dev kdesu-dev \
     kwindowsystem-dev kiconthemes-dev kxmlgui-dev kdoctools-dev libc6-compat \
-    kdeplasma-addons-dev plasma-workspace-dev qt5-qtlocation-dev acl-dev
+    kdeplasma-addons-dev plasma-desktop-dev qt5-qtlocation-dev acl-dev
+
+RUN apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+    krename
 
 WORKDIR /tmp
 
