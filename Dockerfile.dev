@@ -10,7 +10,7 @@ RUN apk --update --upgrade add \
     build-base cmake extra-cmake-modules qt5-qtbase-dev xvfb-run \
     git bash ki18n-dev kio-dev kbookmarks-dev kparts-dev kdesu-dev krename \
     kwindowsystem-dev kiconthemes-dev kxmlgui-dev kdoctools-dev libc6-compat \
-    kdeplasma-addons-dev qt5-qtlocation-dev acl-dev
+    kdeplasma-addons-dev plasma-workspace-dev qt5-qtlocation-dev acl-dev
 
 WORKDIR /tmp
 
